@@ -1,8 +1,10 @@
 package com.codeoftheweb.salvo;
 
+import jdk.internal.net.http.common.ImmutableExtendedSSLSession;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,11 +19,16 @@ public class Game {
     private long id;
     private String newDate;
 
+    public Game(Date date) {
+    }
+
+    @JsonIgnore
     public long getId() {
         return id;
     }
 
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set <GamePlayer> gamePlayer = new HashSet<>();
 
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
@@ -55,19 +62,23 @@ public class Game {
         return score;
     }
 
+    @JsonIgnore
     public void setPlayer(Set<GamePlayer> gamePlayer) {
         this.gamePlayer = gamePlayer;
     }
 
+    @JsonIgnore
     public Map<String, Object> makeGameDTO(Game game) {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("gameId", getId());
+        dto.put("gameId", game.getId());
         dto.put("date", this.getDate());
         dto.put("gamePlayer", game.getGamePlayer()
                 .stream()
                 .map(gp -> gp.makePGamePlayerDTO())
                 .collect(Collectors.toList()));
-        dto.put("score", game.getGamePlayer().stream().map(g -> g.getPlayer().getScore(game) != null ? g.getPlayer().getScore(game).makeScoreDTO() : null));
+        dto.put("score", game.getGamePlayer()
+                .stream()
+                .map(g -> g.getPlayer().getScore(game) != null ? g.getPlayer().getScore(game).makeScoreDTO() : null));
         return dto;
     };
 

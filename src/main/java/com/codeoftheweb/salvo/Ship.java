@@ -13,7 +13,7 @@ public class Ship {
     @GenericGenerator(name ="native", strategy = "native")
     private long id;
     private String type;
-//(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+
     @ManyToOne
     @JoinColumn (name = "gamePlayerId")
     private GamePlayer gamePlayer;
@@ -63,6 +63,9 @@ public class Ship {
         return gamePlayer;
     }
 
+    public void setGamePlayer(GamePlayer gamePlayer) {
+        this.gamePlayer = gamePlayer;
+    }
     public Map<String,Object> makeShipDTO(){
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("type", getType());

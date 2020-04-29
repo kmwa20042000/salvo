@@ -1,8 +1,8 @@
 function getQueryVariable(variable) {
     let query = window.location.search.substring(1);
     let vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
+    for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split("=");
         if (pair[0] == variable) {
             return pair[1];
         }
@@ -10,8 +10,7 @@ function getQueryVariable(variable) {
     return (false);
 }
 
-let data = '';
-fetch("http://localhost:8080/api/game_view/" + getQueryVariable("gp"), {
+fetch("/api/game_view/" + getQueryVariable("gp"), {
     method: "GET",
 }).then(function (res) {
     return res.json();

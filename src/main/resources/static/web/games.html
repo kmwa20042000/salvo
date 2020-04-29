@@ -19,11 +19,15 @@
         <tr>
             <th>Game ID</th>
             <th>Created Time</th>
-            <th>Player</th>
+            <th>Player 1</th>
+            <th>Player 2</th>
+            <th>Join Available Games</th>
         </tr>
 
     </table>
 
+    <div id="joinGameBtn"></div>
+    <button id="createGameBtn">Create Game</button>
     <br>
     <h2>Score Board</h2>
     <table id="scoreBoard">
@@ -36,18 +40,26 @@
         </tr>
     </table>
 
-    <div>
-        <form id="loginForm" onsubmit="return false">
-            <label>Name: <input type="text" name="username"></label>
-            <label>Password: <input type="text" name="password"></label>
-            <button id="loginBtn">Login</button>
-        </form>
 
-        <form id="logout-form" onsubmit=logout()>
-            <button>Log out</button>
-        </form>
+
+    <div class="login-page">
+        <div class="form">
+            <form class="register-form" id="regForm" onsubmit="return false">
+                <input type="text" placeholder="First Name" name="firstName" />
+                <input type="text" placeholder="Last Name" name="lastName" />
+                <input type="password" placeholder="Password" name="password" />
+                <input type="email" placeholder="Email Address" name="userName" />
+                <button id="regBtn">create</button>
+                <p class="message">Already registered? <a href="#">Sign In</a></p>
+            </form>
+            <form class="login-form" id="loginForm" onsubmit="return false">
+                <input type="text" placeholder="Email Addres" name="username" />
+                <input type="text" placeholder="password" name="password" />
+                <button id="loginBtn">login</button>
+                <p class="message">Not registered? <a href="#">Create an account</a></p>
+            </form>
+        </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
     <script src="games.js"></script>
 </body>

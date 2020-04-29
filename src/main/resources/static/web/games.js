@@ -1,20 +1,57 @@
-let data = '';
-fetch("/api/games", {
-    method: "GET",
-}).then(function (res) {
-    return res.json();
-}).then(
-    (gameApi) => {
-        this.data = gameApi;
+function getQueryVariable(variable) {
+    let query = window.location.search.substring(1);
+    let vars = query.split("&");
+    for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split("=");
+        if (pair[0] == variable) {
+            return pair[1];
+        }
+    }
+    return (false);
+}
+
+const fetchGames = fetch('/api/games');
+const fetchScores = fetch('/api/score_board');
+
+Promise.all([fetchGames, fetchScores])
+    .then(values => {
+        return Promise.all(values.map(res => res.json()))
+    })
+    .then(([gameApi, scores]) => {
+        console.log(scores);
         console.log(gameApi);
-        createGameListOne(gameApi);
-        getScore(gameApi);
-        // loginBtn();
+        playerApi = gameApi.player;
+        createGameListOne(gameApi)
+        createScoreBoard(scores)
         document.getElementById("loginBtn").addEventListener("click", function () {
             actLogin()
         });
+        document.getElementById("regBtn").addEventListener("click", function () {
+            actRegister()
+        });
 
+        document.getElementById("createGameBtn").addEventListener("click", function () {
+            createGame()
+        })
+    });
+
+function createScoreBoard(object) {
+    let appendScoreBoard = ''
+    let data = [];
+    let keys = [];
+    for (let key in object) {
+        if (object.hasOwnProperty(key)) {
+            keys.push(key);
+            data.push(object[key])
+        }
+        data.sort((a, b) => b.total - a.total)
+    }
+    data.forEach(el => {
+        appendScoreBoard += '<tr><td>' + el.userName + '</td><td>' + el.total + '</td><td>' + el.w + '</td><td>' + el.l + '</td><td>' + el.t + '</td></tr>'
     })
+    document.getElementById("scoreBoard").innerHTML += appendScoreBoard
+}
+
 
 function getPlayer(array) {
     let toAppend = '';
@@ -22,74 +59,66 @@ function getPlayer(array) {
         toAppend += '<dt>' + array.gamePlayer[i].email + '</dt>'
     }
     console.log(toAppend);
+}
 
+function rejoinGame(array, gameArray, player) {
+    let button = "Must be looged in!";
+    if (player) {
+        if (array.length == 2) {
+            if ((array[0].player.id != player.id && array[1].player.id != player.id)) {
+                button = 'Game is FULL!!</td>'
+            } else {
+                button = '<a href=/web/game.html?gp=' + array[0].gpid + ' class="button" id="joinGameBtn">Rejoin game</td>'
+            }
+        } else {
+            if (array[0].player.id == player.id) {
+                button = '<a href=/web/game.html?gp=' + array[0].gpid + ' class="button" id="joinGameBtn">Rejoin game</td>'
+            } else {
+                button = '<div class="button" data-game=' + gameArray.gameId + '" onclick="joinGame()">Join game</div></td>'
+            }
+        }
+    }
+    console.log(button, gameArray.gameId);
+    return button;
 }
 
 function createGameListOne(array) {
     let appendTo = '';
-    array.forEach(el => {
-        el.gamePlayer.forEach(gamePlayer => {
-            appendTo += '<tr><td>' + el.gameId + '</td><td>' + el.date + '</td><td>' + gamePlayer.player.name + '</td></tr>'
-        })
-    });
+    for (let i = 0; i < array.games.length; i++) {
+        let gameArray = array.games[i];
+        appendTo += '<tr><td>' + gameArray.gameId + '</td><td>' + gameArray.date + '</td><td>' + gameArray.gamePlayer[0].player.name + '</td><td>' + (gameArray.gamePlayer.length == 2 ? array.games[i].gamePlayer[1].player.name : 'Waiting for opponent') + '</td><td>' + rejoinGame(gameArray.gamePlayer, array.games[i], array.player) + '</tr>'
+    }
     document.getElementById("gameList").innerHTML += appendTo;
+
+}
+/*
++(array.player.id ? 'N/A' : '<div class="button" id="joinGameBtn" >Rejoin game' + gameArray.gameId) + '</td></'>'
 }
 
-function getScore(array) {
-    let tableRow = [];
-    let result = [];
-    let apend = '';
-    array.forEach(array => {
-        array.score.forEach(scoreArray => {
-            result.push(scoreArray)
+        gamePlayerArray.forEach(el => {
+                    console.log(el.player.id);
         })
-    });
-    console.log(result);
-    result.forEach(sc => {
-        let gameBoardCol = {
-            playerEmail: "",
-            totalScore: 0,
-            wins: 0,
-            losts: 0,
-            ties: 0,
-            totalPoints: 0,
-        };
-        gameBoardCol.playerEmail = sc.player
-        console.log(gameBoardCol.playerEmail);
 
-        //use to sort the list later, after figure out how to combine the duplicated players.
-        tableRow.push(gameBoardCol)
 
-        if (sc.score == "1") {
-            gameBoardCol.wins++
-            gameBoardCol.totalPoints++
-        } else if (sc.score == "0") {
-            gameBoardCol.losts++
-        } else if (sc.score == "0.5") {
-            gameBoardCol.ties++
-            gameBoardCol.totalPoints = gameBoardCol.totalPoints + 0.5
+    array.games.forEach(el => {
+        el.gamePlayer.forEach(element => {
+            playerIdInGame.push(element.player.id)
+        })
+    })
+    console.log(playerIdInGame);
+*/
+/*
+        const {
+            array: {
+                games: {
+                    gamePlayer: {
+                        player
+                    }
+                }
+            }
         }
-        console.log(gameBoardCol.ties);
-        apend += '<tr><td>' + gameBoardCol.playerEmail + '</td><td>' + gameBoardCol.totalPoints + '</td><td>' + gameBoardCol.wins + '</td><td>' + gameBoardCol.losts + '</td><td>' + gameBoardCol.ties + '</td></tr>'
-    })
-    document.getElementById("scoreBoard").innerHTML += apend;
-}
-
-function loginBtn() {
-    document.getElementById("loginBtn").addEventListener("click", function login(evt) {
-        evt.preventDefault();
-        var form = evt.target.form;
-        $.post("/api/login", {
-                name: form["username"].value,
-                pwd: form["password"].value
-            })
-            .done(function () {
-                console.log("logged in!");
-            })
-            .fail()
-    })
-}
-
+        console.log(player);
+*/
 function logout(evt) {
     evt.preventDefault();
     $.post("/api/logout")
@@ -115,11 +144,13 @@ function actLogin() {
 
         })
         .then(function (data) {
-            console.log(userPassword.value)
             console.log(data)
+            window.alert("You're logged in!")
+            location.reload()
+            console.log("reload");
         })
         .catch(function (error) {
-            console.log("Request failure: ", error);
+            // window.alert("Request failure: player doesn't exists ", error);
         });
 
     //prepare the data in the way how springboot secutity want it.
@@ -129,10 +160,92 @@ function actLogin() {
             var encKey = encodeURIComponent(key);
             var encVal = encodeURIComponent(json[key]);
             body.push(encKey + "=" + encVal);
-            console.log(body);
-            console.log(encKey);
-            console.log(encVal);
         }
         return body.join("&");
     }
+}
+
+$('.message a').click(function () {
+    $('form').animate({
+        height: "toggle",
+        opacity: "toggle"
+    }, "slow");
+});
+
+
+
+function actRegister() {
+    let regForm = document.forms.regForm;
+    let userFirstNameInput = regForm.elements.firstName;
+    let userLastNameInput = regForm.elements.lastName;
+    let userPasswordInput = regForm.elements.password;
+    let userEmailInput = regForm.elements.userName;
+
+    fetch("/api/player", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({
+                "firstName": userFirstNameInput.value,
+                "lastName": userLastNameInput.value,
+                "password": userPasswordInput.value,
+                "userName": userEmailInput.value
+            })
+        })
+        .then(function (res) {
+            console.log(res)
+            window.alert("registered! Please login now with the credential")
+            location.reload()
+        })
+        .catch(function (res) {
+            console.log(res)
+        })
+}
+
+function createGame() {
+    fetch("/api/games", {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+        })
+        .then(function (res) {
+            console.log(res)
+            return res.json();
+            //location.reload(true)
+        })
+        .then(data => {
+            // window.location.replace('/web/game.html?gp=' + data.gpId)
+            console.log(data);
+        })
+        .catch(function (res) {
+            console.log(res)
+        })
+}
+
+function joinGame() {
+    const joinGameBtn = document.getElementById('joinGameBtn');
+    const gameId = joinGameBtn.getAttribute('data-game')
+    fetch(' /api/game/' + gameId + '/players', {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+        })
+        .then(function (res) {
+            console.log(res)
+            return res.json();
+        })
+        .then(data => {
+            console.log(data.gpId);
+        })
+        .catch(function (res) {
+            console.log(res)
+        })
 }

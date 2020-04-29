@@ -18,6 +18,7 @@ public class Score {
     private long id;
 
     @ManyToOne (fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn (name = "gameId")
     private Game game;
 
@@ -42,15 +43,17 @@ public class Score {
     public long getId() {
         return id;
     }
-
+    @JsonIgnore
     public Game getGame() {
         return game;
     }
 
+    @JsonIgnore
     public Player getPlayer() {
         return player;
     }
 
+    @JsonIgnore
     public double getScore() {
         return score;
     }
@@ -76,7 +79,7 @@ public class Score {
     }
 
 
-
+    @JsonIgnore
     public Map<String, Object> makeScoreDTO() {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("score", getScore());

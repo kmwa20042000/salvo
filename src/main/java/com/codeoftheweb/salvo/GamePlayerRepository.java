@@ -1,6 +1,7 @@
 package com.codeoftheweb.salvo;
 
 
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -12,8 +13,7 @@ import java.util.List;
 @RepositoryRestResource
 @RequestMapping("/gameplayers")
 public interface GamePlayerRepository extends JpaRepository <GamePlayer, Long> {
-    @Autowired
-    GamePlayer getGamePlayerById(long id);
+    GamePlayer findById(long id);
 }
 
 

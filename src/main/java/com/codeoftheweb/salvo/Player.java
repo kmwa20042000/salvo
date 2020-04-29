@@ -1,11 +1,13 @@
 package com.codeoftheweb.salvo;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Player {
@@ -13,28 +15,35 @@ public class Player {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
+
+    @JsonIgnore
     private long id;
+
     private String firstName;
     private String lastName;
-    private  String userName;
+    private String userName;
 
+    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public  Player() {}
 
-    public  Player(String first, String last, String email, String password){
+    public Player(String first, String last, String email, String password){
         firstName = first;
         lastName = last;
         userName = email;
+        this.password = password;
     }
-
+    @JsonIgnore
     @OneToMany (mappedBy = "player", fetch = FetchType.EAGER)
     private Set <GamePlayer> gamePlayer = new HashSet<>();
 
+
     @OneToMany (mappedBy = "player", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Score> score = new HashSet<>();
 
-    @JsonIgnore
     public Set<Score> getScore() {
         return score;
     }
@@ -46,6 +55,8 @@ public class Player {
                 .orElse(null);
     }
 
+
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -59,6 +70,7 @@ public class Player {
         return gamePlayer;
     }
 
+
     public String getFirstName() {
         return firstName;
     }
@@ -66,6 +78,7 @@ public class Player {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     public  String getLastName(){
         return  lastName;
     }
@@ -73,10 +86,11 @@ public class Player {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    @JsonIgnore
     public String getUserName() {
         return userName;
     }
-
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -86,25 +100,19 @@ public class Player {
         return firstName+ " " + lastName;
     }
 
+    @JsonIgnore
     public long getId() {
         return id;
     }
-/*
-    public Map <String, Object> calcPoints (Set<Score> scores){
-        for (Score score1 : scores) {
 
-        }
-    };
-    
-  */
-
+    @JsonIgnore
     public Map<String, Object> makePlayerDTO(){
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", getId());
         dto.put("email", getUserName());
         dto.put("name", toString());
+       dto.put("gpid", this.gamePlayer.stream().map(GamePlayer::getId).collect(Collectors.toSet()));
         return dto;
     }
-
 
 }

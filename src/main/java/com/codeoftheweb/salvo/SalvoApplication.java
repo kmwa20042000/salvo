@@ -1,5 +1,6 @@
 package com.codeoftheweb.salvo;
 
+import jdk.internal.net.http.common.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -42,6 +43,10 @@ public class SalvoApplication extends SpringBootServletInitializer {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	};
 
+
+	//@Autowired
+	//private PasswordEncoder passwordEncoder;
+	@Bean
 	public CommandLineRunner initData (PlayerRepository repository,
 									   GameRepository gameRepository,
 									   GamePlayerRepository gpReposityory,
@@ -50,12 +55,17 @@ public class SalvoApplication extends SpringBootServletInitializer {
 									   ScoreRepository scoreRepository){
 		return (args) -> {
 		// Players
-			Player p1 = new Player("Kazu", "Onishi", "kazu@gmail.com","japboy321");
-			Player p2 =new Player("Alessio", "Pressano", "romanpizza@gmail.com","italiano");
-			Player p3 =new Player("Clara", "Colace", "colace@gmail.com","espanola");
-			Player p4 =new Player("Gonzalo", "Atleti", "vivaatleti@gmail.com","viva123");
-			Player p5 =new Player("Leah", "Bugeja", "leah@gmail.com","nihao999");
 
+			Player p1 = new Player("Kazu", "Onishi", "kazu@gmail.com", passwordEncoder().encode("japboy321"));
+			Player p2 =new Player("Alessio", "Pressano", "romanpizza@gmail.com",passwordEncoder().encode("italiano"));
+			Player p3 =new Player("Clara", "Colace", "colace@gmail.com",passwordEncoder().encode("espanola"));
+			Player p4 =new Player("Gonzalo", "Atleti", "vivaatleti@gmail.com",passwordEncoder().encode("viva123"));
+			Player p5 =new Player("Leah", "Bugeja", "leah@gmail.com",passwordEncoder().encode("nihao999"));
+			repository.save(p1);
+			repository.save(p2);
+			repository.save(p3);
+			repository.save(p4);
+			repository.save(p5);
 		//Games
 			Game g1 = new Game (DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 			Game g2 = new Game (DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
@@ -96,11 +106,7 @@ public class SalvoApplication extends SpringBootServletInitializer {
 
 
 		//	Repositories
-			repository.save(p1);
-			repository.save(p2);
-			repository.save(p3);
-			repository.save(p4);
-			repository.save(p5);
+
 
 			gameRepository.save(g1);
 			gameRepository.save(g2);
@@ -132,8 +138,8 @@ public class SalvoApplication extends SpringBootServletInitializer {
 		};
 	}
 }
-
 @Configuration
+@EnableWebSecurity
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 	@Autowired
 	PlayerRepository playerRepository;
@@ -152,31 +158,31 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 	}
 }
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 				http
-				.authorizeRequests()
-						.antMatchers("/","/web/games.html","/web/games.css","/web/games.js","/api/games")
+						.csrf()
+						.disable()
+						.authorizeRequests()
+						.antMatchers("/api/score_board","/","/web/games.html","/web/games.css","/web/games.js","/api/games", "/h2-console/**","/api/**", "/api/players**", "/api/game_view/**", "/web/game.html**","/web/game.js","/web/game.css")
 						.permitAll()
 						.anyRequest()
-						.fullyAuthenticated()
-						.and()
-						.httpBasic();
+						.hasRole("USER");
+
 
 				http.formLogin()
 						.usernameParameter("username")
 						.passwordParameter("password")
-						.loginPage("/api/login");
+						.loginPage("/api/login")
+						.permitAll();
 
 				http.logout().logoutUrl("/api/logout");
 
-
-				// turn off cross site request forgery
-		http.csrf().disable();
+				http.headers().frameOptions().disable();
 
 		//if user is not authenticated, just send an authentication failure response
 		http.exceptionHandling()

@@ -15,10 +15,11 @@ public class GamePlayer {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
+    @JsonIgnore
     private long id;
 
-    @ManyToOne (fetch = FetchType.EAGER)
     @JsonIgnore
+    @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn(name = "playerId")
     private Player player;
 
@@ -42,9 +43,11 @@ public class GamePlayer {
         this.player = player;
     }
 
+    @JsonIgnore
     public Map<String, Object> makePGamePlayerDTO(){
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("player", player.makePlayerDTO());
+        dto.put("gpid", getId());
         return dto;
     }
 
@@ -54,6 +57,27 @@ public class GamePlayer {
         dto.put("player", makePGamePlayerDTO());
         return dto;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setShip(Set<Ship> ship) {
+        this.ship = ship;
+    }
+
+    public void setSalvo(Set<Salvo> salvo) {
+        this.salvo = salvo;
+    }
+
+    public void setNewDate(String newDate) {
+        this.newDate = newDate;
+    }
+
     public Set <Ship> getShip() {return ship;};
     public Set<Salvo> getSalvo() {return  salvo;}
     public String getNewDate() {
@@ -66,21 +90,22 @@ public class GamePlayer {
         this.game = game;
     }
 
+    @JsonIgnore
     public Score getScore() {
         return player.getScore(game);
     };
 
+    @JsonIgnore
     public long getId() {
         return id;
     }
+
+    @JsonIgnore
     public Player getPlayer(){
         return this.player;
     }
     Set<Ship> getShips(){
         return ship;
     }
-
-
-
 
 }
