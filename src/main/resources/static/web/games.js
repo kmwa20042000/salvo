@@ -219,7 +219,7 @@ function createGame() {
             //location.reload(true)
         })
         .then(data => {
-            // window.location.replace('/web/game.html?gp=' + data.gpId)
+            window.location.replace('/web/game.html?gp=' + data.gpId)
             console.log(data);
         })
         .catch(function (res) {

@@ -160,7 +160,7 @@ public class SalvoController {
     }
 
     @RequestMapping(value = "/games/players/{gpId}/ships", method = RequestMethod.POST)
-    public ResponseEntity<String> shipLocations(@PathVariable Long gpId, @RequestBody Ship ship, Authentication authentication) {
+    public ResponseEntity<String> shipLocations(@PathVariable Long gpId, @RequestBody Set<Ship> ships, Authentication authentication) {
         GamePlayer currentPlayer = gpRepo.findById(gpId).orElse(null);
         if ((authenticatedUser(authentication).get("id") == null) || (currentPlayer == null || currentPlayer.getPlayer().getId() != playerRepository.findByUserName(authentication.getName()).getId())) {
             return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
@@ -171,17 +171,12 @@ public class SalvoController {
                 return new ResponseEntity<>("Ship has been placed, try again.", HttpStatus.FORBIDDEN);
             }
             else {
-                ship.stream().forEach(ships -> {
-                    ships.setGamePlayer(currentPlayer);
+                ships.stream().forEach(ship -> {
+                    ship.setGamePlayer(currentPlayer);
                     shipRepo.save(ship);
                 });
                 return new ResponseEntity<>("Ship has been placed", HttpStatus.CREATED);
             }
         }
     }
-    /*
-    @RequestMapping(path = "/games/players/{gamePlayerId}/ships", method = RequestMethod.GET)
-    public ResponseEntity<List<Ship>>
-
-     */
 }
