@@ -1,10 +1,7 @@
 package com.codeoftheweb.salvo;
 
-import jdk.internal.net.http.common.ImmutableExtendedSSLSession;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.util.*;
