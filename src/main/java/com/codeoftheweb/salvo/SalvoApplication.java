@@ -170,7 +170,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						.csrf()
 						.disable()
 						.authorizeRequests()
-						.antMatchers("/images/**","*/images/**","/scripts/**","/css/**","*/**.png","/api/score_board","/","/web/games.html","/web/games.css","/web/games.js","/api/games", "/h2-console/**","/api/**", "/api/players**", "/api/game_view/**", "/web/game.html**","/web/game.js","/web/game.css")
+						.antMatchers("/images/**","*/images/**","/scripts/**","/css/**","*/**.png","/api/score_board","/","/web/games.html","/web/games.css","/web/games.js","/api/games", "/h2-console/**","/api/**", "/api/players**", "/api/game_view/**", "/web/game.html**","/web/game.js","/web/game.css","/web/**")
 						.permitAll()
 						.anyRequest()
 						.hasRole("USER");
