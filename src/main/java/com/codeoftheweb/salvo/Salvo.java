@@ -26,8 +26,7 @@ public class Salvo {
     @ElementCollection
     private List<String> location;
 
-    public Salvo(){
-    }
+    public Salvo(){}
 
     public Map<String,Object> makeSalvoDTO(Salvo salvo){
         Map<String, Object> dto = new LinkedHashMap<>();
@@ -36,6 +35,7 @@ public class Salvo {
         dto.put("location", getLocation());
         return dto;
     };
+
 
 
     public Salvo( GamePlayer gamePlayer, long turnCount, List<String> location) {

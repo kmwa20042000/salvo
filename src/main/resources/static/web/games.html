@@ -5,61 +5,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/games.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <title>Salvo Games!</title>
 </head>
 
 <body>
-    <h1>Hello! Welcome to Salvo!</h1>
-    <br>
-    <h3>
-        Here's the list of games.
-    </h3>
-    <dl id="container"></dl>
-    <table id="gameList">
-        <tr>
-            <th>Game ID</th>
-            <th>Created Time</th>
-            <th>Player 1</th>
-            <th>Player 2</th>
-            <th>Action</th>
-        </tr>
+    <nav class="navbar navbar-dark bg-dark">
+        <H5>Salvo</H5>
+        <div class="d-flex flex-row-reverse bd-highlight" id="navbar-btn">
+            <button onclick="logout()" id="logoutBtn" class="btn btn-success p-2 bd-highlight invisible"
+                id="logout-btn">Logout</button>
+            <a href="#login-from" class="btn btn-outline-success p-2 bd-highlight" id="login-btn">Login/Register</a>
+        </div>
 
-    </table>
-
-    <div id="joinGameBtn"></div>
-    <button id="createGameBtn">Create Game</button>
-    <br>
-    <h2>Score Board</h2>
-    <table id="scoreBoard">
-        <tr>
-            <th>Player</th>
-            <th>Total Points</th>
-            <th>Wins (1)</th>
-            <th>Loses (0)</th>
-            <th>Ties (0.5)</th>
-        </tr>
-    </table>
+    </nav>
+    <div class="d-flex justify-content-center">
+        <h1>Salvo Game Lobby</h1>
+    </div>
 
 
-
-    <div class="login-page">
-        <div class="form">
-            <form class="register-form" id="regForm" onsubmit="return false">
-                <input type="text" placeholder="First Name" name="firstName" />
-                <input type="text" placeholder="Last Name" name="lastName" />
-                <input type="password" placeholder="Password" name="password" />
-                <input type="email" placeholder="Email Address" name="userName" />
-                <button id="regBtn">create</button>
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
-            </form>
-            <form class="login-form" id="loginForm" onsubmit="return false">
-                <input type="text" placeholder="Email Addres" name="username" />
-                <input type="text" placeholder="password" name="password" />
-                <button id="loginBtn">login</button>
-                <p class="message">Not registered? <a href="#">Create an account</a></p>
-            </form>
+    <div class="container-md">
+        <table class="table table-borderless">
+            <h3>
+                Here's the list of games.
+            </h3>
+            <thead>
+                <th scope="col">ID</th>
+                <th scope="col">Created Time</th>
+                <th scope="col">Player 1</th>
+                <th scope="col">Player 2</th>
+                <th scope="col">Action</th>
+            </thead>
+            <tbody id="gameList">
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            <div id="joinGameBtn"></div>
         </div>
     </div>
+    <div class="d-flex justify-content-center">
+        <button id="createGameBtn" class="btn btn-primary btn-sm, invisible">Create Game</button>
+    </div>
+    <div class="container-md">
+        <h2>Score Board</h2>
+        <table id="scoreBoard">
+            <thead>
+                <tr>
+                    <th scope="col">Player</th>
+                    <th scope="col">Total Points</th>
+                    <th scope="col">Wins (1)</th>
+                    <th scope="col">Loses (0)</th>
+                    <th scope="col">Ties (0.5)</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="login-page">
+        <div id="login-from">
+            <div class="form">
+                <form class="register-form" id="regForm" onsubmit="return false">
+                    <input type="text" placeholder="First Name" name="firstName" />
+                    <input type="text" placeholder="Last Name" name="lastName" />
+                    <input type="password" placeholder="Password" name="password" />
+                    <input type="email" placeholder="Email Address" name="userName" />
+                    <button id="regBtn">create</button>
+                    <p class="message">Already registered? <a>Sign In</a></p>
+                </form>
+                <form class="login-form" id="loginForm" onsubmit="return false">
+                    <input type="text" placeholder="Email Addres" name="username" />
+                    <input type="text" placeholder="password" name="password" />
+                    <button id="loginBtn">login</button>
+                    <p class="message">Not registered? <a>Create an account</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
     <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
     <script src="./games.js"></script>
 </body>

@@ -61,11 +61,14 @@ public class SalvoApplication extends SpringBootServletInitializer {
 			Player p3 =new Player("Clara", "Colace", "colace@gmail.com",passwordEncoder().encode("espanola"));
 			Player p4 =new Player("Gonzalo", "Atleti", "vivaatleti@gmail.com",passwordEncoder().encode("viva123"));
 			Player p5 =new Player("Leah", "Bugeja", "leah@gmail.com",passwordEncoder().encode("nihao999"));
+			Player p6 = new Player("Dan","Gordan","gordan@gmail.com",passwordEncoder().encode("gordan"));
 			repository.save(p1);
 			repository.save(p2);
 			repository.save(p3);
 			repository.save(p4);
 			repository.save(p5);
+			repository.save(p6);
+
 		//Games
 			Game g1 = new Game (DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 			Game g2 = new Game (DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
@@ -95,12 +98,12 @@ public class SalvoApplication extends SpringBootServletInitializer {
 			Salvo salvoes3 = new Salvo(gp1,2,locationList3);
 
 		//Score
-			Score score1 = new Score(g1,p1,1,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
+			Score score1 = new Score(g1,p1,1.0,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 			Score score2 = new Score(g1,p2,.5,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 			Score score3 = new Score(g2,p3,0.5,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
-			Score score4 = new Score(g2,p1,1,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
+			Score score4 = new Score(g2,p1,1.0,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 			Score score5 = new Score(g1,p1,0.5,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
-			Score score6 = new Score(g3,p5,0,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
+			Score score6 = new Score(g3,p5,0.0,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 			Score score7 = new Score(g3,p2,.5,DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 
 

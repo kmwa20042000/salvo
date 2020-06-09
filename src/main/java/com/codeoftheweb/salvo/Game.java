@@ -48,6 +48,8 @@ public class Game {
         this.newDate = date;
     }
 
+    private Integer currentTurn;
+
     public String getNewDate() {
         return newDate;
     }
@@ -65,6 +67,10 @@ public class Game {
     @JsonIgnore
     public void setPlayer(Set<GamePlayer> gamePlayer) {
         this.gamePlayer = gamePlayer;
+    }
+
+    public Integer getCurrentTurn() {
+        return currentTurn;
     }
 
     @JsonIgnore

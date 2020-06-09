@@ -33,7 +33,7 @@ public class Score {
 
     public Score(){};
 
-    public Score(Game game, Player player, double score, String finishDate) {
+    public Score(Game game, Player player, Double score, String finishDate) {
         this.game = game;
         this.player = player;
         this.score = score;

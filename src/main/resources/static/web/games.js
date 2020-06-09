@@ -33,6 +33,7 @@ Promise.all([fetchGames, fetchScores])
         document.getElementById("createGameBtn").addEventListener("click", function () {
             createGame()
         })
+        hideLogin(gameApi.player)
     });
 
 function createScoreBoard(object) {
@@ -52,6 +53,27 @@ function createScoreBoard(object) {
     document.getElementById("scoreBoard").innerHTML += appendScoreBoard
 }
 
+function hideLogin(player) {
+    let loginFrom = document.getElementById('login-from');
+    let loginBtn = document.getElementById('login-btn');
+    let userIcon = document.createElement('h5');
+    let navBar = document.getElementById('navbar-btn');
+    let logoutBtn = document.getElementById('logoutBtn');
+    let createGameBtn = document.getElementById('createGameBtn')
+    if (player) {
+        let playerName = player.name;
+        // hide the elements
+        loginFrom.classList.add('invisible');
+        loginBtn.classList.add('invisible');
+        // userInfo 
+        userIcon.setAttribute('class', 'p-2 bd-highlight');
+        userIcon.innerHTML = playerName;
+        navBar.appendChild(userIcon);
+        logoutBtn.classList.remove('invisible');
+        createGameBtn.classList.remove('invisible');
+    }
+}
+
 
 function getPlayer(array) {
     let toAppend = '';
@@ -61,24 +83,32 @@ function getPlayer(array) {
     console.log(toAppend);
 }
 
+function logout() {
+    fetch("/api/logout", {
+        method: "POST",
+        credentials: 'include'
+    }).then((response) => {
+        location.reload()
+    })
+};
+
 function rejoinGame(array, gameArray, player) {
     let button = "Must be looged in!";
     if (player) {
         if (array.length == 2) {
             if ((array[0].player.id != player.id && array[1].player.id != player.id)) {
-                button = 'Game is FULL!!</td>'
+                button = '    </td>'
             } else {
-                button = '<a href=/web/game.html?gp=' + array[0].gpid + ' class="button" id="joinGameBtn">Rejoin game</td>'
+                button = '<a href=/web/game.html?gp=' + array[0].gpid + ' class="btn btn-dark" id="joinGameBtn">Rejoin game</td>'
             }
         } else {
             if (array[0].player.id == player.id) {
-                button = '<a href=/web/game.html?gp=' + array[0].gpid + ' class="button" id="joinGameBtn">Rejoin game</td>'
+                button = '<a href=/web/game.html?gp=' + array[0].gpid + ' class="btn btn-dark" id="joinGameBtn">Rejoin game</td>'
             } else {
-                button = '<div class="button" data-game=' + gameArray.gameId + '" onclick="joinGame()">Join game</div></td>'
+                button = '<div id="rejoinBtn" class="btn btn-dark" data-game=' + gameArray.gameId + ' onclick="joinGame()">Join game</div></td>'
             }
         }
     }
-    console.log(button, gameArray.gameId);
     return button;
 }
 
@@ -89,48 +119,20 @@ function createGameListOne(array) {
         appendTo += '<tr><td>' + gameArray.gameId + '</td><td>' + gameArray.date + '</td><td>' + gameArray.gamePlayer[0].player.name + '</td><td>' + (gameArray.gamePlayer.length == 2 ? array.games[i].gamePlayer[1].player.name : 'Waiting for opponent') + '</td><td>' + rejoinGame(gameArray.gamePlayer, array.games[i], array.player) + '</tr>'
     }
     document.getElementById("gameList").innerHTML += appendTo;
-
-}
-/*
-+(array.player.id ? 'N/A' : '<div class="button" id="joinGameBtn" >Rejoin game' + gameArray.gameId) + '</td></'>'
 }
 
-        gamePlayerArray.forEach(el => {
-                    console.log(el.player.id);
-        })
-
-
-    array.games.forEach(el => {
-        el.gamePlayer.forEach(element => {
-            playerIdInGame.push(element.player.id)
-        })
-    })
-    console.log(playerIdInGame);
-*/
 /*
-        const {
-            array: {
-                games: {
-                    gamePlayer: {
-                        player
-                    }
-                }
-            }
-        }
-        console.log(player);
-*/
 function logout(evt) {
-    evt.preventDefault();
     $.post("/api/logout")
         .done()
         .fail()
 }
+*/
 
 function actLogin() {
     let form = document.forms.loginForm;
     let userNameInput = form.elements.username;
     let userPassword = form.elements.password;
-
     fetch("/api/login", {
             credentials: "include",
             headers: {
@@ -141,13 +143,19 @@ function actLogin() {
                 username: userNameInput.value,
                 password: userPassword.value
             })
-
         })
-        .then(function (data) {
-            console.log(data)
-            window.alert("You're logged in!")
-            location.reload()
-            console.log("reload");
+        .then(function (res) {
+            console.log(res);
+            if (res.ok == true) {
+                setTimeout(function () {
+                    location.reload();
+                }, 500);
+            } else {
+                window.alert("Incorrect Credentials!")
+            }
+            return res.json();
+        }).then((data) => {
+            console.log(data);
         })
         .catch(function (error) {
             // window.alert("Request failure: player doesn't exists ", error);
@@ -228,8 +236,9 @@ function createGame() {
 }
 
 function joinGame() {
-    const joinGameBtn = document.getElementById('joinGameBtn');
-    const gameId = joinGameBtn.getAttribute('data-game')
+    const joinGameBtn = document.getElementById('rejoinBtn');
+    const gameId = joinGameBtn.dataset.game
+    console.log(gameId);
     fetch(' /api/game/' + gameId + '/players', {
             credentials: 'include',
             headers: {
@@ -244,6 +253,7 @@ function joinGame() {
         })
         .then(data => {
             console.log(data.gpId);
+            window.location.replace('/web/game.html?gp=' + data.gpId)
         })
         .catch(function (res) {
             console.log(res)

@@ -78,6 +78,10 @@ public class GamePlayer {
         this.newDate = newDate;
     }
 
+    @OneToMany(mappedBy = "gamePlayer")
+    private Set<Salvo> firedSalvoes = new LinkedHashSet<>();
+
+    public Set<Salvo> getFiredSalvoes() {return firedSalvoes;}
     public Set <Ship> getShip() {return ship;};
     public Set<Salvo> getSalvo() {return  salvo;}
     public String getNewDate() {
@@ -107,5 +111,7 @@ public class GamePlayer {
     Set<Ship> getShips(){
         return ship;
     }
+
+
 
 }
