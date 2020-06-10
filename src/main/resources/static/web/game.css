@@ -1,0 +1,320 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+
+html body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(70, 204, 252, 1) 100%);
+  min-width: 860px;
+  background-image: url("../images/original.jpg");
+  font-family: "Roboto",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.grid-opponent>.grid-cell {
+  cursor: pointer;
+}
+
+.display-none {
+  display: none;
+}
+
+.invisible {
+  position: absolute;
+  left: -9999px;
+}
+
+@media only screen and (min-device-width : 375px) and (max-device-width : 812px) and (-webkit-device-pixel-ratio : 3) and (orientation : landscape) {
+
+  /* STYLES GO HERE */
+  body {
+    background-color: #808080;
+  }
+}
+
+.shipSunkText {
+  color: #F60018;
+  font-style: bold;
+}
+
+
+.fired {
+  vertical-align: top;
+  /*clears the vertical space between rows*/
+  height: 40px;
+  width: 30px;
+  display: inline-block;
+  background-color: rgb(172, 39, 34);
+  margin: 2.5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#fleet-hp {
+  margin-top: 100px;
+}
+
+#fleet-hp h5 {
+  margin-left: 30px;
+}
+
+.salvoSelection {
+  vertical-align: top;
+  /*clears the vertical space between rows*/
+  height: 40px;
+  width: 30px;
+  display: inline-block;
+  background-color: rgb(197, 126, 20);
+  margin: 2.5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+
+
+.hits {
+  content: url(../images/skull.png);
+  height: 40px;
+  width: 30px;
+}
+
+.hits-opponent {
+  content: url(../images/bomb.png);
+  height: 40px;
+  width: 30px;
+}
+
+.navbar h5 {
+  color: #dddddd;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+span {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  color: #222222;
+}
+
+a {
+  color: #222222;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+div {
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  color: #EEEEEE;
+  background-color: #25567B;
+  border: none;
+  margin: 1em auto 0 auto;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
+.game-container {
+  position: relative;
+}
+
+
+.fleet-roster {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: 'Open Sans',
+    Helvetica,
+    Arial,
+    sans-serif;
+  background-color: #EEEEEE;
+}
+
+.fleet-roster,
+button {
+  opacity: 1;
+  -webkit-transition: opacity 0.5s ease-out;
+  -o-transition: opacity 0.5s ease-out;
+  transition: opacity 0.5s ease-out;
+}
+
+.roated-gridlocations {
+  background-color: #808080;
+}
+
+.fleet-roster li {
+  margin: 0.5em 0;
+  background-color: #808080;
+}
+
+.fleet-roster li:hover {
+  color: #aaa;
+  cursor: pointer;
+}
+
+.fleet-roster>div {
+  cursor: pointer;
+
+}
+
+.drag-action {
+  background-color: #808080;
+}
+
+div .grid-container {
+  width: 430px;
+  display: inline-block;
+}
+
+.grid-container h2 {
+  width: 550px;
+  display: inline-block;
+}
+
+.grid {
+  position: relative;
+  vertical-align: top;
+  padding: 5px;
+  height: 500px;
+  width: 450px;
+  background-color: #25567B;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.grid-container:last-child {
+  margin-left: 10px;
+}
+
+
+.grid-cell {
+  vertical-align: top;
+  /*clears the vertical space between rows*/
+  height: 40px;
+  width: 30px;
+  display: inline-block;
+  background-color: #99C2E1;
+  margin: 2.5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.grid-header {
+  vertical-align: top;
+  height: 40px;
+  width: 30px;
+  text-align: center;
+  display: inline-block;
+  background-color: rgb(9, 33, 51);
+  margin: 2.5px;
+  font-family: 'Open Sans',
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #ddd;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.grid-cell:hover {
+  /* Fallback for IE */
+  background-color: #66A3D2;
+}
+
+.add-grid-color {
+  background-color: #808080;
+
+}
+
+.patrolboatforList {
+  content: url('../images/patrolb.png');
+}
+
+.sitemessage {
+  display: inline-block;
+  white-space: nowrap;
+  animation: floatText 15s infinite linear;
+  /*Initial offset*/
+}
+
+.sitemessage:hover {
+  animation-play-state: paused;
+}
+
+@keyframes floatText {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.submarineforList {
+  content: url('../images/sub.png');
+}
+
+.destroyerforList {
+  content: url('../images/destroyer.jpg');
+}
+
+.battleshipforList {
+  content: url('../images/battleship.png');
+}
+
+
+.carrierforList {
+  content: url('../images/Aircraft_carriers.png');
+}
+
+/*--------------------------------------*/
+.patrolboat {
+  background-color: #FF9200;
+}
+
+.submarine {
+  background-color: #F60018;
+}
+
+.destroyer {
+  background-color: rgb(26, 23, 211);
+}
+
+.battleship {
+  background-color: rgb(8, 160, 84);
+}
+
+.carrier {
+  background-color: rgb(236, 240, 24);
+}
+
+.human-player .grid-cell:hover {
+  background-color: #99C2E1;
+}
+
+
+.grid-ship,
+.human-player .grid-ship:hover {
+  background-color: #808080;
+}
