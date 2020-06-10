@@ -6,7 +6,7 @@ html body {
   margin: 0;
   background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(70, 204, 252, 1) 100%);
   min-width: 860px;
-  background-image: url("../images/original.jpg");
+  background-image: url("./images/original.jpg");
   font-family: "Roboto",
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -79,13 +79,13 @@ html body {
 
 
 .hits {
-  content: url(../images/skull.png);
+  content: url(./images/skull.png);
   height: 40px;
   width: 30px;
 }
 
 .hits-opponent {
-  content: url(../images/bomb.png);
+  content: url(./images/bomb.png);
   height: 40px;
   width: 30px;
 }
@@ -251,7 +251,7 @@ div .grid-container {
 }
 
 .patrolboatforList {
-  content: url('../images/patrolb.png');
+  content: url('./images/patrolb.png');
 }
 
 .sitemessage {
@@ -272,20 +272,20 @@ div .grid-container {
 }
 
 .submarineforList {
-  content: url('../images/sub.png');
+  content: url('./images/sub.png');
 }
 
 .destroyerforList {
-  content: url('../images/destroyer.jpg');
+  content: url('./images/destroyer.jpg');
 }
 
 .battleshipforList {
-  content: url('../images/battleship.png');
+  content: url('./images/battleship.png');
 }
 
 
 .carrierforList {
-  content: url('../images/Aircraft_carriers.png');
+  content: url('./images/Aircraft_carriers.png');
 }
 
 /*--------------------------------------*/

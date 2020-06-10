@@ -140,7 +140,7 @@ html {
 
 body {
   /* fallback for old browsers */
-  background-image: url("../images/home2.jpg");
+  background-image: url("./images/home2.jpg");
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
